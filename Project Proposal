@@ -1,0 +1,9 @@
+Music Recommendation Project
+
+The purpose of this project is to utilize public music API's to give song recommendations based on a user's preference. The user will be able to enter a specific artist, genre, release year, and explicit content. 
+The goals of this project are: 
+  1. Be able to accept user input for a recommendations
+  2. Utilize APIs for specific recommendations
+  3. Return the artist, song name, and year to the user
+  4. Keep each song in a dictionary for the user to look back to. 
+Potential APIs for this project are from: https://github.com/public-apis/public-apis?tab=readme-ov-file#music
