@@ -18,7 +18,7 @@ def SpotifyToken():
 
     response = requests.post(TokenUrl, headers=headers, data=data) #requests access token from token URL
     AccessToken = response.json().get('access_token') #gets access token and converts it from json format 
-    return AccessToken  #return access token for API retrieval
+    return AccessToken  # Make sure to return the token
 
 def preferences():  #get user preferences for search parameters
     artist = input("What artist would you like recommendations for? ").capitalize()
@@ -82,19 +82,26 @@ def UseSpotify(artist, genre, year, allowExplicit):
 
 def main():
     access_token = SpotifyToken()
-
-    songs = [] #final list of song recommendations 
+    songs = []  #final list of song recommendations
+    recommended_set = set()  #tracks unique song pairs (artist: track)
     
-    while True: #loops if the user wants more recommendations or recommendations for different artists
-        artist, genre, year, allowExplicit = preferences() 
+    while True: ##loops if the user wants more recommendations or recommendations for different artists
+        artist, genre, year, allowExplicit = preferences()
         tracks = UseSpotify(artist, genre, year, allowExplicit)
 
         if tracks:
             print("\nRecommended Tracks:")
+            NewRecs = 0
             for track in tracks:
-                print(f"Name: {track['name']}, Artist: {track['artist']}, Date: {track['year']}, Explicit: {track['explicit']}")
-                songs.append(f"{track['name']} by {track['artist']}")
-        else:
+                song_id = f"{track['name']} by {track['artist']}" 
+                if song_id not in recommended_set: #ensures user does not get a recommendation twice
+                    print(f"Name: {track['name']}, Artist: {track['artist']}, Date: {track['year']}, Explicit: {track['explicit']}")
+                    songs.append(song_id)
+                    recommended_set.add(song_id)
+                    NewRecs += 1 #tracks if songs have been recommended on this query
+            if NewRecs == 0: #when there are no tracks available
+                print("No new tracks found that haven't already been recommended.")
+        else: #when there is nothing matching the query
             print("No tracks found based on your preferences.")
 
         moreRecs = input("\nWould you like more recommendations? Type 'yes' to continue, or press any key to exit and get your list of recommendations. ")
@@ -102,6 +109,7 @@ def main():
             print("\nFinal list of recommended songs:")
             print('\n'.join(songs))  
             break
+
 
 if __name__ == '__main__':
     main()
