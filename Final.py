@@ -1,3 +1,10 @@
+"""
+Spotify API Music Recommendation Project
+By: Arthur Gramlich
+CIS 351
+"""
+
+
 import requests
 import base64
 
@@ -18,7 +25,7 @@ def SpotifyToken():
 
     response = requests.post(TokenUrl, headers=headers, data=data) #requests access token from token URL
     AccessToken = response.json().get('access_token') #gets access token and converts it from json format 
-    return AccessToken 
+    return AccessToken  #Make sure to return the token
 
 def preferences():  #get user preferences for search parameters
     artist = input("What artist would you like recommendations for? ").capitalize()
